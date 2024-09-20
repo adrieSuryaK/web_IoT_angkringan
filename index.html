@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8 />
+  <meta content="width=device-width, initial-scale=1.0 " />
+  <title>IOT ANGKRINGAN</title>
+
+  <!-- Material design theming -->
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+  <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css">
+  <script src="https://canvas-gauges.com/download/latest/all/gauge.min.js"></script>
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+
+  <!-- Import and configure the Firebase SDK -->
+  <!-- <script src="/__/firebase/9.14.0/firebase-app-compat.js"></script>
+  <script src="/__/firebase/9.14.0/firebase-auth-compat.js"></script> -->
+  <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-compat.js"></script>
+  <script src="/__/firebase/init.js?useEmulator=true"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="./script.js"></script>
+
+<body>
+  <div class="mdl-layout-container">
+    <div class="demo-layout mdl-layout mdl-js-layout  mdl-layout--fixed-header">
+      <!-- Header section containing title -->
+      <header class="mdl-layout__header mdl-color-text--white mdl-color--indigo-900 rainbow">
+        <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-grid">
+          <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--8-col-desktop">
+            <img src="./img/hikcampus.png" alt="" style="width: 100px;">
+            <a href="/">
+              <h1 class="h2T" style="font-weight: bold;">ANGKRINGAN 5.0</h1>
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <main class="mdl-layout__content mdl-color--grey-100">
+        <div class="mdl-grid demo-content">
+          <div
+            class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-mobile mdl-cell--12-col-desktop mdl-grid">
+            <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+              <div id="auth">
+                <div class="mdl-grid">
+                  <div class="mdl-cell mdl-cell--10-col">
+                    <div class="mdl-card__title mdl-color--indigo-900 mdl-color-text--white center-items">
+                      <h2 style="font-weight: bold;" class="mdl-card__title-text center-items">FIREBASE AUTH
+                      </h2>
+                    </div>
+                    <div>
+                      <div id="spinner" class="mdl-spinner mdl-spinner--single-color mdl-js-spinner"></div>
+                    </div>
+                    <p id="dtext" class="authblock" style="font-size: 16px;">Masukan email dan password Anda &nbsp;</p>
+                    <input class="mdl-textfield__input authblock" style="display:inline;width:auto;" type="text"
+                      id="email" name="email" placeholder="Email" />
+                    &nbsp;&nbsp;&nbsp;
+                    <input class="mdl-textfield__input authblock" style="display:inline;width:auto;" type="password"
+                      id="password" name="password" placeholder="Password" />
+                    <br /><br />
+                    <button disabled class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo-900"
+                      id="quickstart-sign-in" name="signin">Sign in</button>
+                    &nbsp;&nbsp;&nbsp;
+                    <button class="mdl-button mdl-js-button mdl-button--raised authblock mdl-color-text--indigo-900"
+                      id="quickstart-sign-up" name="signup">Daftar</button>
+                    &nbsp;&nbsp;&nbsp;
+                    <button class="mdl-button mdl-js-button mdl-button--raised authblock mdl-color-text--indigo-900"
+                      id="quickstart-password-reset" name="verify-email">Kirim Email Atur Ulang Kata Sandi</button>
+
+                    <!-- Container display the user details -->
+                    <div class="quickstart-user-details-container authblock">
+                      Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
+                      <!-- Uid display status dimatikan di style -->
+                      <div style="display: none;">Firebase auth <code>currentUser</code> object value:</div>
+                      <pre style="display: none;"><code id="quickstart-account-details"></code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Monitoring -->
+            <div
+              class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-mobile mdl-grid dashboard">
+              <div class="mdl-card__supporting-text center-items-monitor">
+                <div class="mdl-grid">
+                  <div
+                    class=" mdl-cell mdl-cell--12-col mdl-card__title mdl-color--indigo-900 mdl-color-text--white center-items"
+                    style="margin-bottom: 20px ;">
+                    <br>
+                    <h2 style="font-weight: bold;" class="mdl-card__title-text">SENSOR MONITORING</h2>
+                  </div>
+
+                  <!-- 1st row -->
+                  <!-- weather prediction-->
+                  <div
+                    class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-mobile mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title mdl-color--indigo-900 mdl-color-text--white">
+                      <h2 class="mdl-card__title-text">PREDIKSI HUJAN</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                      <div style="display: flex; justify-content: center; align-items: center; height: 120px;">
+                        <div style="margin-right: 20px;">
+                          <img id="prediksi_hujan_image" style="width: 130px; height: 95px;" />
+                        </div>
+                        <div style="text-align: center;">
+                          <h2 id="prediksi_hujan" style="color:#1a237e;font-size:20px; font-weight: bold;">
+                            <span class="responsive-text">Kemungkinan kecil terjadi hujan</span>
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-mobile mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title mdl-color--indigo-900 mdl-color-text--white">
+                      <h2 class="mdl-card__title-text">KONDISI CUACA | REALTIME</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                      <div style="display: flex; justify-content: center; align-items: center; height: 120px;">
+                        <div style="margin-right: 20px;">
+                          <img id="kondisi_hujan_image" style="width: 180px; height: 120px;" />
+                        </div>
+                        <div style="text-align: center;">
+                          <h2 id="kondisi_hujan_output" style="color:#1a237e;font-size:20px; font-weight: bold;">
+                            <span class="responsive-text">Kemungkinan kecil terjadi hujan</span>
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 2nd row -->
+                  <!-- Kelembaban -->
+                  <div
+                    class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-mobile mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title mdl-color--indigo-900 mdl-color-text--white">
+                      <h2 class="mdl-card__title-text">KELEMBABAN | %</h2>
+                    </div>
+                    <div align="center">
+                      <br><br>
+                      <div class="mdl-card__supporting-text text-center">
+                        <h2 id="humidity" class="sensor-value blue">0</h2>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Suhu -->
+                  <div
+                    class="mdl-cell mdl-cell--4-col mdl-cell--12-col-tablet mdl-cell--12-col-phone mdl-cell--12-col-mobile mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title mdl-color--indigo-900 mdl-color-text--white">
+                      <h2 class="mdl-card__title-text">SUHU | &deg;Celcius</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text" class="gauge-wrapper">
+
+                      <canvas id="canvas_temperature" data-type="linear-gauge" data-units="°C" data-title="Temperature"
+                        data-min-value="-10" data-max-value="90" data-major-ticks="[-10,0,10,20,30,40,50,60,70,80,90]"
+                        data-minor-ticks="5" data-stroke-ticks="true" data-ticks-width="15" data-ticks-width-minor="7.5"
+                        data-highlights='[{"from": -10, "to": 10, "color": "rgba(0,0, 255, .3)"},
+                        {"from": 70, "to": 90, "color": "rgba(255, 0, 0, .3)"}]' data-color-major-ticks="#ddd"
+                        data-color-minor-ticks="#ddd" data-color-title="#eee" data-color-units="#ccc"
+                        data-color-numbers="#eee" data-color-plate="#191964" data-border-shadow-width="0"
+                        data-border-shadow-width="0" data-borders="true" data-needle-type="arrow" data-needle-width="2"
+                        data-needle-circle-size="7" data-needle-circle-outer="true" data-needle-circle-inner="false"
+                        data-animation-duration="1500" data-animation-rule="linear" data-color-border-outer="#333"
+                        data-color-border-outer-end="#111" data-color-border-middle="#222"
+                        data-color-border-middle-end="#111" data-color-border-inner="#111"
+                        data-color-border-inner-end="#333" data-color-needle-shadow-down="#333"
+                        data-color-needle-circle-outer="#333" data-color-needle-circle-outer-end="#111"
+                        data-color-needle-circle-inner="#111" data-color-needle-circle-inner-end="#222"
+                        data-value-box-border-radius="0" data-color-value-box-rect="#222"
+                        data-color-value-box-rect-end="#333"></canvas>
+                    </div>
+                  </div>
+
+                  <!-- Deteksi Gas -->
+                  <div
+                    class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-mobile mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title mdl-color--indigo-900 mdl-color-text--white">
+                      <h2 class="mdl-card__title-text">GAS DETECTION</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                      <div style="display: flex; justify-content: center; align-items: center; height: 200px;">
+                        <div style="margin-right: 20px;">
+                          <img id="gas_image" style="width: 115px; height: 180px;" />
+                        </div>
+                        <div style="text-align: center;">
+                          <h2 id="gas_notice" style="color:#1a237e;font-size:20px; font-weight: bold;">...</h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 3rd row -->
+                  <!-- Intensitas Cahaya -->
+                  <div
+                    class="mdl-cell mdl-cell--3-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-mobile mdl-card mdl-shadow--2dp"
+                    style="height: 550px;">
+                    <div class="mdl-card__title mdl-color--indigo-900 mdl-color-text--white">
+                      <h2 class="mdl-card__title-text">INTENSITAS CAHAYA</h2>
+                    </div>
+                    <div align="center">
+                      <br><br><br><br>
+                      <div class="mdl-card__supporting-text">
+                        <canvas id="canvas_irradiance" data-type="radial-gauge" data-width="250" data-height="250"
+                          data-units="illumination" data-title="LDR" data-min-value="100" data-start-angle="90"
+                          data-ticks-angle="180" data-value-box="True" data-max-value="1200"
+                          data-major-ticks="100,200,300,400,500,600,700,800,900,1000,1100,1200" data-minor-ticks="2"
+                          data-stroke-ticks="true"
+                          data-highlights='[{"from": 100, "to": 500, "color": "rgba(255, 0, 0, .3)"},{"from": 1000, "to": 1200, "color": "rgba(0,0, 255, .3)"}]'
+                          data-ticks-angle="225" data-start-angle="67.5" data-color-major-ticks="#ddd"
+                          data-color-minor-ticks="#ddd" data-color-title="#eee" data-color-units="#ccc"
+                          data-color-numbers="#eee" data-color-plate="#191964" data-border-shadow-width="0"
+                          data-border-shadow-width="0" data-borders="true" data-needle-type="arrow"
+                          data-needle-width="2" data-needle-circle-size="7" data-needle-circle-outer="true"
+                          data-needle-circle-inner="false" data-animation-duration="1500" data-animation-rule="linear"
+                          data-color-border-outer="#333" data-color-border-outer-end="#111"
+                          data-color-border-middle="#222" data-color-border-middle-end="#111"
+                          data-color-border-inner="#111" data-color-border-inner-end="#333"
+                          data-color-needle-shadow-down="#333" data-color-needle-circle-outer="#333"
+                          data-color-needle-circle-outer-end="#111" data-color-needle-circle-inner="#111"
+                          data-color-needle-circle-inner-end="#222" data-value-box-border-radius="0"
+                          data-color-value-box-rect="#222" data-color-value-box-rect-end="#333"></canvas>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Grafik Ultrasonik -->
+                  <div class="mdl-cell mdl-cell--9-col mdl-cell--8-col-tablet mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title mdl-color--indigo-900 mdl-color-text--white">
+                      <h2 class="mdl-card__title-text">ULTRASONIC</h2>
+                    </div>
+                    <div
+                      class="mdl-card__supporting-text mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-mobile">
+                      <canvas id="myChart" width="900" height="450"></canvas>
+                    </div>
+                  </div>
+
+                  <!-- Monitor Listrik -->
+                  <div
+                    class="mdl-cell mdl-cell--12-col mdl-card__title mdl-color--indigo-900 mdl-color-text--white center-items"
+                    style="margin-bottom: 20px ; margin-top: 20px;">
+                    <br>
+                    <h2 style="font-weight: bold;" class="mdl-card__title-text">ELECTRICITY MONITORING</h2>
+                  </div>
+
+                  <!-- 4th row -->
+                  <!-- Current sensor -->
+                  <div
+                    class="sensor-card mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-mobile mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title mdl-color--indigo-900 mdl-color-text--white">
+                      <h2 class="mdl-card__title-text">ARUS | A</h2>
+                    </div>
+                    <div align="center">
+                      <br>
+                      <div class="mdl-card__supporting-text text-center">
+                        <br>
+                        <h2 id="current" class="sensor-value blue">0</h2>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Voltage sensor -->
+                  <div
+                    class="sensor-card mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-mobile mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title mdl-color--indigo-900 mdl-color-text--white">
+                      <h2 class="mdl-card__title-text">TEGANGAN | V</h2>
+                    </div>
+                    <div align="center">
+                      <br>
+                      <div class="mdl-card__supporting-text">
+                        <br>
+                        <h2 id="voltage" class="sensor-value blue">0</h2>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Power measure -->
+                  <div
+                    class="sensor-card mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-mobile mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title mdl-color--indigo-900 mdl-color-text--white">
+                      <h2 class="mdl-card__title-text">DAYA | W</h2>
+                    </div>
+                    <div align="center">
+                      <br>
+                      <div class="mdl-card__supporting-text">
+                        <br>
+                        <h2 id="power" class="sensor-value blue">0</h2>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Lampu LED toggle button card -->
+                  <div
+                    class="sensor-card mdl-cell mdl-cell--3-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-mobile mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title mdl-color--indigo-900 mdl-color-text--white">
+                      <h2 class="mdl-card__title-text">SWITCH LAMPU</h2>
+                    </div>
+                    <div align="center">
+                      <br>
+                      <div class="mdl-card__supporting-text">
+                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="lampu">
+                          <input type="checkbox" id="lampu" class="mdl-switch__input">
+                          <span class="mdl-switch__label"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Servo slider card -->
+                  <div
+                    class="sensor-card mdl-cell mdl-cell--3-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-mobile mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title mdl-color--indigo-900 mdl-color-text--white">
+                      <h2 class="mdl-card__title-text">SERVO CONTROL</h2>
+                    </div>
+                    <div align="center">
+                      <br><br><br>
+                      <p>
+                        <input id="slider" class="mdl-slider mdl-js-slider" type="range" id="s1" min="0" max="180"
+                          value="5" step="5">
+                        <span id="sliderval" class="sensor-value">0</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div
+                    class=" mdl-cell mdl-cell--12-col mdl-card__title mdl-color--indigo-900 mdl-color-text--white center-items"
+                    style="margin-bottom: 20px ; margin-top: 20px;">
+                    <br>
+                    <h2 style="font-weight: bold;" class="mdl-card__title-text">DATA TABLE</h2>
+                  </div>
+                  <div id="pdf">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>No.</th>
+                          <th>Tanggal</th>
+                          <th>Waktu</th>
+                          <th>Current</th>
+                          <th>Voltage</th>
+                          <th>Power</th>
+                          <th>Humidity</th>
+                          <th>Irradiance</th>
+                          <th>Temperature</th>
+                          <th>Prediksi Hujan</th>
+                          <th>Kondisi Hujan</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="button-container">
+                      <button id="prevPage" class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo-900"
+                        style="margin-right: 20px;">Sebelumnya</button>
+                      <button id="nextPage" class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo-900"
+                        style="margin-right: 960px;">Selanjutnya</button>
+                      <button id="export" class="mdl-button mdl-js-button mdl-button--raised mdl-color-text--indigo-900"
+                      onclick="createPDF()">Cetak</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </main>
+    </div>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  function createPDF() {
+      var sTable = document.getElementById('pdf').innerHTML;
+      var style = "<style>";
+      style = style + "table {width: 100%; font: 14px times new roman;}";
+      style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+      style = style + "padding: 2px 2px;text-align: center;}";
+      style = style + "h1 {text-align: center;}";
+      style = style + "</style>";
+
+      var win = window.open('', '', 'height=700,width=700');
+
+      win.document.write('<html><head>');
+      win.document.write('<h1>Tabel Data Monitoring Angkringan 5.0</h1>');
+      win.document.write(style);
+      win.document.write('</head>');
+      win.document.write('<body>');
+      win.document.write(sTable); 
+      win.document.write('</body></html>');
+      win.document.close();
+      win.print();
+  }
+</script>
+</html>
